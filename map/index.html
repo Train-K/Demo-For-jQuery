@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+		<head>
+		<meta charset="utf-8" />
+		<title></title>
+		<script src="http://www.jq22.com/jquery/jquery-1.10.2.js"></script>
+		<script src="http://api.map.baidu.com/api?v=2.0&ak=A1LU7iHS0avqQwPLAxbhKn0UYSQCuRVH"></script>
+		<script src="js/jquery.baiduMap.min.js"></script>
+		<style>
+		* { margin: 0; padding: 0; }
+		a { text-decoration: none; }
+		ul { list-style: none; }
+		body,  html { height: 100%; font-family: "微软雅黑";}
+		.box { width: 100%; height: 760px;}
+		#container { width: 80%; height: 100%; }
+		.list { width: 20%; height: 100%; background: #eee; }
+		.list li { height: 34px; line-height: 34px; padding-left: 20px; font-size: 20px; margin-top: 50px;}
+		.list li a { color: black; font-family: "黑体"}
+		.title { font-size: 14px; font-weight: bold; color: #cc5522; }
+		.content { font-size: 13px; color: #333; margin-top: 6px; }
+		.fl { float: left; }
+		</style>
+		</head>
+
+<body>
+	<div class="box">
+	    <div id="container" class="container fl"></div>
+		    <ul class="list fl">
+			    <li> <a href="javascript:;">中北大学</a> </li>
+			    <li> <a href="javascript:;">山西大学</a> </li>
+			    <li> <a href="javascript:;">太原理工大学</a> </li>
+			    <li> <a href="javascript:;">胜利桥东</a> </li>
+			    <li> <a href="javascript:;">太原站</a> </li>
+		  	</ul>
+	    </div>
+	<script type="text/javascript">
+			var points = [{
+				id: 1,
+				lng: 112.455812,
+				lat: 38.021616,
+				title: "中北大学",
+				content: ["地址：太原市尖草坪区学院路3号", "电话：0351-62881144"]
+			}, {
+				id: 2,
+				lng: 112.594277,
+				lat: 37.806874,
+				title: "山西大学",
+				content: ["地址：太原市小店区坞城路52号", "电话：0351-69768087"]
+			}, {
+				id: 3,
+				lng: 112.529803,
+				lat: 37.859042,
+				title: "太原理工大学",
+				content: ["地址：太原市万柏林区新矿院路18号", "电话：0351-65131892"]
+			},{
+				id: 4,
+				lng: 112.548794,
+				lat: 37.894567,
+				title: "胜利桥东",
+				content: ["地址：太原市尖草坪区胜利桥东站", "电话：0351-65131892"]
+			},{
+				id: 5,
+				lng: 112.593301,
+				lat: 37.866705,
+				title: "太原站",
+				content: ["地址：太原市建设南路2号", "电话：0351-65131892"]
+			}];
+
+			var map = new BaiduMap({
+				id: "container",
+				level: 15, //  选填--地图级别--(默认15)
+				zoom: true, // 选填--是否启用鼠标滚轮缩放功能--(默认false)
+				type: ["地图", "卫星", "三维"], // 选填--显示地图类型--(默认不显示)
+				width: 320, // 选填--信息窗口width--(默认自动调整)
+				height: 70, // 选填--信息窗口height--(默认自动调整)
+				titleClass: "title",
+				contentClass: "content",
+				showPanorama: true, // 是否显示全景控件(默认false)
+				showMarkPanorama: true, // 是否显示标注点全景图(默认false)
+				showLabel: false, // 是否显示文本标注(默认false)
+				mapStyle: "normal", // 默认normal,可选dark,light
+				icon: { // 选填--自定义icon图标
+					url: "img/marker2.png",
+					width: 34,
+					height: 94
+				},
+				centerPoint: { // 中心点经纬度
+					lng: 112.455812,
+					lat: 38.021616
+				},
+				index: 3, // 开启对应的信息窗口，默认-1不开启
+				animate: true, // 是否开启坠落动画，默认false
+				points: points, // 标注点--id(唯一标识)
+				callback: function(id) {
+					$(".list").find("li").eq(id - 1).addClass("active").siblings().removeClass("active");
+				}
+			});
+
+			var data = map.getPosition();
+			var $li = $(".list").find("li");
+
+			$li.each(function(i) {
+				$(this).data("id", i + 1);
+			}).on("click", function() {
+				map.openInfoWindow($(this).data("id"));
+				$(this).addClass("active").siblings().removeClass("active");
+			}).eq(data.id - 1).addClass("active");
+		</script>
+</body>
+</html>
